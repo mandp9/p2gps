@@ -32,6 +32,7 @@ jobs:
         working-directory: src/Clients 
         run: ./gradlew build  
       - uses: actions/upload-artifact@v4 
+        with:
            name: Clients 
            path: src/Clients/build/libs 
      
