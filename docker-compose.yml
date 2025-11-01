@@ -1,0 +1,56 @@
+version: "3"
+services:
+  # --- Servicio de Base de Datos ---
+  mongo:
+    image: mariapilarb/p2gps:db
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.15"
+          memory: 200M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "28017:28017"
+      - "27017:27017"
+    volumes:
+      - "db-data:/data/db"
+
+  # --- Servicio de Creación de Órdenes (Backend) ---
+  order:
+    image: mariapilarb/p2gps:order
+    depends_on:
+      - "mongo"
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 500M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "8080:8080"
+      
+  # --- Servicio Web (Frontend) ---
+  web:
+    image: mariapilarb/p2gps:web
+    depends_on:
+      # Recomendación para asegurar que el backend esté al menos iniciándose
+      - "order" 
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 300M
+      restart_policy:
+        condition: on-failure
+    ports: # Esta etiqueta está correctamente indentada
+      - "80:8080"
+
+# --- Definición de Volúmenes ---
+volumes: # Esta sección está correctamente indentada (nivel superior)
+  db-data: 
+    # Define el volumen 'db-data' para persistencia
