@@ -2,7 +2,7 @@ version: "3"
 services:
   # --- Servicio de Base de Datos ---
   mongo:
-    image: mariapilarb/p2gps:db
+    image: paberlo/p2gps:db
     deploy:
       replicas: 1
       resources:
